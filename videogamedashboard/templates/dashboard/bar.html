@@ -20,7 +20,7 @@
         chosenValues = selectedGenre.map(key => genre_counts_dict[key]);
         updateChart(); // Update selectedGenre with the new value
     });
-    
+
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: true,
@@ -35,7 +35,7 @@
             },
             title: {
                 display: true,
-                text: selectedGenre + ' Games',
+                text: '# of Games by Genre',
                 font: {
                     size: 18,
                     weight: 'bold'
@@ -54,7 +54,6 @@
     };
 
     function updateChart() {
-        chart.options.plugins.title.text = selectedGenre + ' Games';
         chart.data.datasets[0].data = chosenValues;
         chart.data.labels = selectedGenre;
         chart.update(); // Update the chart with the new title
@@ -68,14 +67,12 @@
 
 </script>
 
-<!-- make genre_counts.keys to a list of values -->
-
 {% endblock %}
 
 {% block options %}
 
     {% for genre in genres %}
-        <option value="{{ genre }}" selected>{{ genre }}</option>
+        <option value="{{ genre }}">{{ genre }}</option>
     {% endfor %}
 
 {% endblock options %}

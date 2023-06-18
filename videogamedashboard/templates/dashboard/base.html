@@ -27,17 +27,16 @@
 </head>
 
 <body>
+  
 
-    <select id="genreSelect" class="selectpicker" multiple data-live-search="true">
-        {% block options %}
-        {% endblock options %}
-    </select>
-      
-      
+    <div class="container mt-3">
+        <div class="row justify-content-center align-items-center">
+            <select id="genreSelect" class="selectpicker align-items-center" multiple data-selected-text-format="count > 2">
+                {% block options %}
+                {% endblock options %}
+            </select>
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
+            <div class="col-10">
                 {% block content %}
                 {% endblock content %}
             </div>

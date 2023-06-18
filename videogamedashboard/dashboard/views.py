@@ -8,12 +8,14 @@ def bar(request):
 
     games = pd.DataFrame(games.values())
     
-    genres = ["Action", "Adventure", "Puzzle", "Racing", "Role-Playing"]
+    genres = ["Action", "Adventure", "Puzzle", "Racing", "Role-Playing", "Platformer", "Shooter", "First-Person", "Open-World"]
 
     genre_counts = {}
  
     for genre in genres:
         genre_counts[genre] = games[games["genres"].str.contains(genre)].shape[0]
+
+    print(games.genres.value_counts())
 
 
     return render(request, "dashboard/bar.html", {"genre_counts_dict":  genre_counts,
