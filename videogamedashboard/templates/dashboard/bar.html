@@ -1,48 +1,81 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-<h1>{{context}}</h1>
 
-<div style="height: 500px;"> // TODO: Use Bootstrap to make this responsive
-    <canvas id="myChart"></canvas>  
-</div>
+<canvas id="myChart"></canvas> 
+
 <script>
+    
     const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {{genres|safe}},
-            datasets: [{
-                label: '# of Games',
-                data: {{genre_counts|safe}},
-                borderWidth: 1
-            }]
+    let selectedGenre = $('#genreSelect').val();
+
+    var genre_counts_dict = {{ genre_counts_dict|safe }};
+    var genre_counts = {{ genre_counts|safe }};
+    var genres = {{ genres|safe }};
+    var chosenValues = [];
+
+    $('#genreSelect').on('change', function() {
+        selectedGenre = $(this).val();
+        chosenValues = selectedGenre.map(key => genre_counts_dict[key]);
+        updateChart(); // Update selectedGenre with the new value
+    });
+    
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         },
-        options: {
-            responsive: true, // Enable responsiveness
-            maintainAspectRatio: false, // Allow the chart to fill its container
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+        plugins: {
+            legend: {
+                position: 'top',
             },
-            plugins: {
-                legend: {
-                    position: 'top', // Change the position of the legend (top, bottom, left, right)
-                },
-                title: {
-                    display: true,
-                    text: '# of Games by Genre', // Customize the chart title
-                    font: {
-                        size: 18, // Change the font size of the title
-                        weight: 'bold' // Set the font weight of the title
-                    }
+            title: {
+                display: true,
+                text: selectedGenre + ' Games',
+                font: {
+                    size: 18,
+                    weight: 'bold'
                 }
             }
         }
+    };
+
+    const chartData = {
+        labels: genres,
+        datasets: [{
+            label: '# of Games',
+            data: genre_counts,
+            borderWidth: 1
+        }]
+    };
+
+    function updateChart() {
+        chart.options.plugins.title.text = selectedGenre + ' Games';
+        chart.data.datasets[0].data = chosenValues;
+        chart.data.labels = selectedGenre;
+        chart.update(); // Update the chart with the new title
+    }
+
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
     });
+
 </script>
 
+<!-- make genre_counts.keys to a list of values -->
+
 {% endblock %}
-```
+
+{% block options %}
+
+    {% for genre in genres %}
+        <option value="{{ genre }}" selected>{{ genre }}</option>
+    {% endfor %}
+
+{% endblock options %}
