@@ -1,0 +1,48 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<h1>{{context}}</h1>
+
+<div style="height: 500px;"> // TODO: Use Bootstrap to make this responsive
+    <canvas id="myChart"></canvas>  
+</div>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{genres|safe}},
+            datasets: [{
+                label: '# of Games',
+                data: {{genre_counts|safe}},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, // Enable responsiveness
+            maintainAspectRatio: false, // Allow the chart to fill its container
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top', // Change the position of the legend (top, bottom, left, right)
+                },
+                title: {
+                    display: true,
+                    text: '# of Games by Genre', // Customize the chart title
+                    font: {
+                        size: 18, // Change the font size of the title
+                        weight: 'bold' // Set the font weight of the title
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
+```
