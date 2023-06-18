@@ -37,7 +37,7 @@
                 display: true,
                 text: '# of Games by Genre',
                 font: {
-                    size: 18,
+                    size: 25,
                     weight: 'bold'
                 }
             }
@@ -70,9 +70,13 @@
 {% endblock %}
 
 {% block options %}
+    <select id="genreSelect" class="selectpicker align-items-center" multiple data-selected-text-format="count > 2">
 
-    {% for genre in genres %}
-        <option value="{{ genre }}">{{ genre }}</option>
-    {% endfor %}
+        {% for genre in genres %}
+            <option value="{{ genre }}">{{ genre }}</option>
+        {% endfor %}
+
+    </select>
+
 
 {% endblock options %}

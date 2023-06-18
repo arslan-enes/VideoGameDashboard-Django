@@ -1,0 +1,70 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+<canvas id="scatterChart"></canvas>
+
+<script>
+    $(document).ready(function() {
+        // Fetch data from the backend
+        $.ajax({
+            url: "{% url 'scatter_data' %}",
+            method: "GET",
+            success: function(data) {
+                // Parse the data received
+                var labels = data.labels;
+                var datasets = data.datasets;
+    
+                // Create the chart
+                var ctx = document.getElementById("scatterChart").getContext("2d");
+                var scatterChart = new Chart(ctx, {
+                    type: "scatter",
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Metascore',
+                                    font: {
+                                        size: 18,
+                                    }
+                                },
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'User Score',
+                                    font: {
+                                        size: 18,
+                                    }
+                                },
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Scores of 50 Random PC Games',
+                                font: {
+                                    size: 25,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+    </script>
+    
+
+{% endblock content %}
